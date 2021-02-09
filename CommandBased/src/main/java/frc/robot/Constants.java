@@ -28,5 +28,12 @@ public final class Constants {
 	public static final int JOYSTICK_NUMBER = 0;
 	public static final int SHOOTER1 = 4;
 	public static final int SHOOTER2 = 6;
+	public static final int CAMERA_RES_X = 0;
+	public static final int CAMERA_RES_Y = 0;
+	public static final int RANGE_FINDER = 1;
+	public static final double SETPOINT_FORWARD = 0;
+	public static final int INTAKE1 = 0;
+	public static final int INTAKEFORWARD12 = 0;
+	public static final int INTAKEBACKWARD12 = 0;
 	public static double shootSpeed1 = 0.75;
 }

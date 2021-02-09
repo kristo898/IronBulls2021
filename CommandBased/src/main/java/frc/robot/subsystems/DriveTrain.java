@@ -4,13 +4,12 @@
 
 package frc.robot.subsystems;
 
-
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 
-
-import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -23,6 +22,7 @@ public class DriveTrain extends SubsystemBase {
     SpeedControllerGroup leftMotors;
     SpeedControllerGroup rightMotors;
     DifferentialDrive drive;
+    private final AnalogInput rangeFinder = new AnalogInput(Constants.RANGE_FINDER);
   /** Creates a new DriveTrain. */
   public DriveTrain() {
     // Master Controllers
@@ -52,14 +52,24 @@ public class DriveTrain extends SubsystemBase {
     // This method will be called once per scheduler run
   }
   
-  public void driveWithJoystick(Joystick Joystick, double speed)
+  public void driveWithJoystick(XboxController driverJoystick, double speed)
   {
-    drive.arcadeDrive(Joystick.getRawAxis(Constants.left_X_Axis) * speed,Joystick.getRawAxis(Constants.left_Y_AXIS) * speed);
+    drive.arcadeDrive(driverJoystick.getRawAxis(Constants.left_X_Axis) * speed,driverJoystick.getRawAxis(Constants.left_Y_AXIS) * speed);
   }
   public void driveForward(double speed)
   {
     drive.tankDrive(speed, speed);
   }
+
+  public boolean driveToDistance(double setPointdistance, double speed)
+  {
+    while(rangeFinder.getAverageVoltage() > setPointdistance)
+    {
+      driveForward(speed);
+    }
+    return true;
+  }
+
   public void stop()
   {
     drive.stopMotor();

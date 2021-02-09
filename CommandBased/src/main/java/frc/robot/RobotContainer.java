@@ -4,10 +4,13 @@
 
 package frc.robot;
 
+import edu.wpi.cscore.UsbCamera;
+import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.GenericHID;
-import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.DriveForwardTimed;
+import frc.robot.commands.DriveToDistance;
 import frc.robot.commands.DriveWithJoysticks;
 import frc.robot.commands.ShootBall;
 import frc.robot.subsystems.DriveTrain;
@@ -29,7 +32,8 @@ public class RobotContainer {
   private final DriveTrain driveTrain;
   private final DriveWithJoysticks driveWithJoysticks;
   private final DriveForwardTimed driveForwardTimed;
-  public static Joystick driverJoystick;
+  private final DriveToDistance driveToDistance;
+  public static XboxController driverJoystick;
   //Shooter Declare
   private final Shooter shooter;
   private final ShootBall shootBall;
@@ -48,11 +52,18 @@ public class RobotContainer {
     driveForwardTimed = new DriveForwardTimed(driveTrain);
     driveForwardTimed.addRequirements(driveTrain);
 
-    driverJoystick = new Joystick(Constants.JOYSTICK_NUMBER);
+    driveToDistance = new DriveToDistance(driveTrain);
+    driveToDistance.addRequirements(driveTrain);
+
+    driverJoystick = new XboxController(Constants.JOYSTICK_NUMBER);
 
     shooter = new Shooter();
     shootBall = new ShootBall(shooter);
     shootBall.addRequirements(shooter);
+
+      //Initialize Camera
+      UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
+      camera.setResolution(Constants.CAMERA_RES_X, Constants.CAMERA_RES_Y);
 
     // Configure the button bindings
     configureButtonBindings();
@@ -65,7 +76,7 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    JoystickButton shootButton = new JoystickButton(driverJoystick, Joystick.ButtonType.kTrigger.value);
+    JoystickButton shootButton = new JoystickButton(driverJoystick, XboxController.Button.kBumperRight.value);
     shootButton.whileHeld(new ShootBall(shooter));
   }
 
