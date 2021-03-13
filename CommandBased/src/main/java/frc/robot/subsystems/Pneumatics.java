@@ -4,29 +4,44 @@
 
 package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
-import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
 
 public class Pneumatics extends SubsystemBase {
-  Compressor compressor;
-  DoubleSolenoid Intake12;
-  /** Creates a new Pnmatics. */
+  DoubleSolenoid Intake12 = new DoubleSolenoid(0, 1);
+  DoubleSolenoid Intake22 = new DoubleSolenoid(2, 3);
+  DoubleSolenoid ShooterPiston = new DoubleSolenoid(4, 5);
+  /** Creates a new Pneumatics. */
   public Pneumatics() {
-    Compressor compressor = new Compressor();
-    DoubleSolenoid Intake12 = new DoubleSolenoid(Constants.INTAKEFORWARD12, Constants.INTAKEBACKWARD12);
-    
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    compressor.start();
-  }
-  public void BackIntake12Pneumatics(Value kforward)
-  {
     
   }
-}
+  public void BackIntakeretract()
+  {
+    Intake12.set(DoubleSolenoid.Value.kReverse);
+  }
+  public void BackIntakeextend()
+  {
+    Intake12.set(DoubleSolenoid.Value.kForward);
+  }
+  public void FrontIntakeretract()
+  {
+    Intake22.set(DoubleSolenoid.Value.kReverse);
+  }
+  public void FrontIntakeextend()
+  {
+    Intake22.set(DoubleSolenoid.Value.kForward);
+  }
+  public void ShooterPistonextend()
+  {
+    ShooterPiston.set(DoubleSolenoid.Value.kForward);
+  }
+  public void ShooterPistonretract()
+  {
+    ShooterPiston.set(DoubleSolenoid.Value.kReverse);
+  }
+}  
